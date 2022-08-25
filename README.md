@@ -27,7 +27,7 @@ The files read_data.py, _sgc.py, extinction_correction.py and _sam.py read the o
 In the _fitting.py code, there are various functions to fit the models as describe in Shah et.al.:
 a. reduced_chi2_for_all_stars: In this function, the reduced chi2 for all the stars is calculated by matching the observed colours to the model colours.
 b. reduced_chi2_leq_2: In the function only stars that have reduced chi2 value leq 2 are selected to generate the catalogue. This function also uses the colour matching method.
-c. compute_nir2: In this function, the reduced chi2 is computed for all the stars by keeping the extinction and scale factor free and minimizing the chi2. Raw i.e. optical photometry that is not corrected for reddening is supplied to this function.
+c. compute_nir2: In this function, the reduced chi2 is computed for all the stars by keeping the extinction and scale factor free parameters and minimizing the chi2. Raw i.e. optical photometry that is not corrected for reddening is supplied to this function.
 
 The user can specify which method to use in the scipt file. The computed NIR magnitudes are converted to Vega system from AB system in these functions itself.
 
