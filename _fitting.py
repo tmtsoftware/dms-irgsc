@@ -18,7 +18,7 @@ def find_nearest(self, array, value):
     return array[idx]
 
 def calc_sf(self, j, om, e_om, sm, index_minv):
-    print('Calculating the scale factor while it is not set as a free parameter')
+    #print('Calculating the scale factor while it is not set as a free parameter')
 
     ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag = om
     e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag = e_om
@@ -40,7 +40,7 @@ def calc_sf(self, j, om, e_om, sm, index_minv):
 
 
 def computed_reduced_chi2(self, j, oc, mc, e_oc):
-    print('Compute the reduced chi2 by matching the observed and model colours')
+    #print('Computing the reduced chi2 by matching the observed and model colours')
 
     obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
     sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
@@ -73,22 +73,21 @@ cat_sam_i = []; cat_sam_z = []; cat_sam_y = []; cat_teff = []; cat_logg = [];\
 cat_feh = []; cat_computed_j = []; cat_e_computed_j = []; cat_computed_h = [];\
 cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
 
-
-    if self.use_reduced_chi2_leq_2 is not False:
+    if self.use_reduced_chi2_all_stars is not True:
+        print('setting use_reduced_chi2_all_stars to True')
+        self.use_reduced_chi2_all_stars is True
         print('Computing the NIR magnitudes for all stars by computing chi2r after matching the colours')
 
         ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag, e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag, de_reddened_gr, de_reddened_ri, de_reddened_gi, de_reddened_gz, de_reddened_gy, de_reddened_rz, de_reddened_ry, de_reddened_iz, de_reddened_iy, de_reddened_zy, e_gr, e_ri, e_gi, e_gz, e_gy, e_rz, e_ry, e_iz, e_iy, e_zy = self.extinction_corrected_photometry()
 
-        if self.use_sam == None:
+        if self.use_kurucz is None and self.use_phoenix is None:
             print("Please enter the name of the Stellar Atmospheric Model to be used")
 
-        if self.use_sam == 'Kurucz':
-                print('Using Kurucz Model templates')
+        if self.use_kurucz is True:
                 model_params = self.select_kurucz_models()
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
 
-        elif self.use_sam == 'Phoenix':
-                print('Using Phoenix Model templates')
+        elif self.use_phoenix is True:
                 model_params = self.select_phoenix_models()
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
 
@@ -162,20 +161,27 @@ cat_sam_i = []; cat_sam_z = []; cat_sam_y = []; cat_teff = []; cat_logg = [];\
 cat_feh = []; cat_computed_j = []; cat_e_computed_j = []; cat_computed_h = [];\
 cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
 
-
-    if self.use_reduced_chi2_leq_2 is not False:
+    if self.use_reduced_chi2_leq_2 is not True:
+        print('setting use_reduced_chi2_all_stars to True')
+        self.use_reduced_chi2_leq_2 is True
         print('Computing the NIR magnitudes for those stars whose chi2_r is less than or \
         equal to 2 after matching the observed and model colours')
 
         ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag, e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag, de_reddened_gr, de_reddened_ri, de_reddened_gi, de_reddened_gz, de_reddened_gy, de_reddened_rz, de_reddened_ry, de_reddened_iz, de_reddened_iy, de_reddened_zy, e_gr, e_ri, e_gi, e_gz, e_gy, e_rz, e_ry, e_iz, e_iy, e_zy = self.extinction_corrected_photometry()
 
-        if use_sam == None:
+        optical_magnitudes = ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag
+        e_optical_magnitudes = e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag
+
+        if self.use_kurucz is None and self.use_phoenix is None:
             print("Please enter the name of the Stellar Atmospheric Model to be used")
-        elif use_sam == 'Kurucz':
+
+        if self.use_kurucz is True:
                 model_params = self.select_kurucz_models()
-        elif use_sam == 'Phoenix':
+                teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
+
+        elif self.use_phoenix is True:
                 model_params = self.select_phoenix_models()
-        teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
+                teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
 
         sam_gr = sam_g - sam_r; sam_ri = sam_r - sam_i; sam_gi = sam_g - sam_i;\
          sam_gz = sam_g - sam_z; sam_gy = sam_g - sam_y; sam_ry = sam_r - sam_y;\
@@ -185,6 +191,7 @@ cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
         observed_colours = de_reddened_gr, de_reddened_gi, de_reddened_gz, de_reddened_gy, de_reddened_ri, de_reddened_ry, de_reddened_rz, de_reddened_iz, de_reddened_iy, de_reddened_zy
         model_colours = sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy
         e_observed_colours = e_gr, e_ri, e_gi, e_gz, e_gy, e_rz, e_ry, e_iz, e_iy, e_zy
+        model_magnitudes = sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k
 
         with open('catalogue.txt', 'w') as file0:
             for j in range(len(de_reddened_gr)):
@@ -193,7 +200,7 @@ cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
                 minv = self.find_nearest(dvf, min_dvf)
                 if minv <= 2.0:
                     index_best_fit_sam = np.where(minv == (dvf))[0]
-                    sf, e_sf, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.calc_sf(j, index_minv = index_best_fit_sam)
+                    sf, e_sf, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.calc_sf(j, om=optical_magnitudes,e_om=e_optical_magnitudes,sm=model_magnitudes, index_minv = index_best_fit_sam)
                     file0.write('%0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %s\n' %(ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], sf, e_sf, minv, sam_g[index_best_fit_sam], sam_r[index_best_fit_sam], sam_i[index_best_fit_sam], sam_z[index_best_fit_sam], sam_y[index_best_fit_sam], teff[index_best_fit_sam], logg[index_best_fit_sam], feh[index_best_fit_sam], computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k, self.use_sam))
                     cat_ps_ra = np.append(cat_ps_ra, ps_ra[j])
                     cat_e_ps_ra = np.append(cat_e_ps_ra, err_ps_ra[j])
@@ -238,9 +245,6 @@ def compute_flux(self, mag):
 
 def calc_sf2(self, initial_guess, smag, obmag, e_obmag, e_ebv, reddening_constants):
 
-    if self.use_compute_nir_by_keeping_sf_and_reddening_free is True:
-        print('Computing the NIR magnitudes by keeping the scale factor and reddening free')
-
         rg, rr, ri, rz, ry = reddening_constants
         sf, ebv_fp = initial_guess
 
@@ -267,6 +271,11 @@ import scipy.optimize
 #function to calculate the NIR magnitudes by keeping the scale factor and reddening free parameters
 def compute_nir2(self):
 
+    if self.use_compute_nir_by_keeping_sf_and_reddening_free is not True:
+        print('Setting use_computed_nir_by_keeping_sf_and_reddening_free to True')
+
+        self.use_compute_nir_by_keeping_sf_and_reddening_free is True
+        print('Computing the NIR magnitudes by keeping the scale factor and reddening free')
     bnds = [(-np.inf,np.inf), (0,2)]
     #ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag, e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag, de_reddened_gr, de_reddened_gi, de_reddened_ri, de_reddened_gy, de_reddened_gz, de_reddened_ry, de_reddened_rz, de_reddened_iy, de_reddened_iz, de_reddened_zy, e_ec_gr, e_ec_gi, e_ec_gz, e_ec_gy, e_ec_ri, e_ec_rz, e_ec_ry, e_ec_iz, e_ec_iy, e_ec_zy = self.extinction_corrected_photometry()
     ps_ra, e_ps_ra, ps_dec, e_ps_dec, ps1g, ps1r, ps1i, ps1z, ps1y, ps1_eg, ps1_er, ps1_ei, ps1_ez, ps1_ey = self.star_galaxy_classification()
@@ -281,23 +290,26 @@ def compute_nir2(self):
     Rz = (1.499 - 0.0023*(ps1g - ps1i))
     Ry = (1.251 - 0.0027*(ps1g - ps1i))
 
-    if use_sam == None:
+    if self.use_kurucz is None and self.use_phoenix is None:
             print("Please enter the name of the Stellar Atmospheric Model to be used")
-    elif use_sam == 'Kurucz':
-        model_params = self.select_kurucz_models()
-    elif use_sam == 'Phoenix':
-        model_params = self.select_phoenix_models()
-    teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
+
+    if self.use_kurucz is True:
+                model_params = self.select_kurucz_models()
+                teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
+
+    elif self.use_phoenix is True:
+                model_params = self.select_phoenix_models()
+                teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
 
     with open('catalogue.txt', 'w') as file0:
-
+        print('Starting the optimisation routine')
         for j in range(len(ps_ra)):
             chi2_arr = []
             sf_arr = []
             ebv_arr = []
             for j0 in range(len(teff)):
-                if use_sam == None:
-                        print("Please enter the name of the Stellar Atmospheric Model to be used")
+                #if self.use_sam == None:
+                #        print("Please enter the name of the Stellar Atmospheric Model to be used")
 
                 smag = sam_g[j0], sam_r[j0], sam_i[j0], sam_z[j0], sam_y[j0]
                 obmag = gobmag[j], robmag[j], iobmag[j], zobmag[j], yobmag[j]
@@ -310,11 +322,11 @@ def compute_nir2(self):
                 chi2_arr = np.append(chi2_arr, self.calc_sf2(res, smag, obmag, e_obmag, self.err_ebv, reddening_constants))
             minv = np.min(chi2_arr)
             index_minv = np.where(chi2_arr==minv)[0]
-            best_sf = sf_arr[index_minv]
+            best_sf = sf_arr[index_minv]; err_ebv = ebv_arr[index_minv]
             kfj = self.compute_flux(sam_j[index_minv])
             kfh = self.compute_flux(sam_h[index_minv])
             kfk = self.compute_flux(sam_k[index_minv])
             computed_j = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfj) + self.aj - 0.91
             computed_h = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfh) + self.ah - 1.39
             computed_k = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfk) + self.ak -1.85
-            file0.write('%0.16f %0.8f %0.8f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.5f %0.5f %s\n' %(best_sf, actual_ps_ra[j], actual_ps_dec[j], actual_err_ps_ra[j], actual_err_ps_dec[j], kurucz_ukidss_j[index_minv], actual_gmag[j], actual_rmag[j], actual_imag[j], actual_zmag[j], actual_ymag[j], teff[index_minv], logg[index_minv], feh[index_minv], actual_e_gmag[j], actual_e_rmag[j], actual_e_imag[j], actual_e_zmag[j], actual_e_ymag[j], kurucz_ps_g[index_minv], kurucz_ps_r[index_minv], kurucz_ps_i[index_minv], kurucz_ps_z[index_minv], kurucz_ps_y[index_minv], minv, err_obs[j], computed_j, computed_h, computed_k, kurucz_ukidss_h[index_minv], kurucz_ukidss_k[index_minv], ebv_arr[index_minv], err_ebv, %s))
+            file0.write('%0.16f %0.8f %0.8f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.5f %0.5f %s\n' %(best_sf, ps_ra[j], ps_dec[j], e_ps_ra[j], e_ps_dec[j], kfj, ps1g[j], ps1r[j], ps1i[j], ps1z[j], ps1y[j], teff[index_minv], logg[index_minv], feh[index_minv], ps1_eg[j], ps1_er[j], ps1_ei[j], ps1_ez[j], ps1_ey[j], sam_g[index_minv], sam_r[index_minv], sam_i[index_minv], sam_z[index_minv], sam_y[index_minv], minv, err_obs[j], computed_j, computed_h, computed_k, kfh, kfk, ebv_arr[index_minv], err_ebv, self.use_sam))

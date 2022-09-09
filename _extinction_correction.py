@@ -6,7 +6,7 @@ def extinction_corrected_photometry(self):
     print('Correcting the optical photometry of the probable stellar sources for reddening and extinction.')
     optical_data = self.optical_data
 
-    ps_ra, e_ps_ra, ps_dec, e_ps_dec, ps1g, ps1r, ps1i, ps1z, ps1y, ps1_eg, ps1_er, ps1_ei, ps1_ez, ps1_ey = self.star_galaxy_classification()    
+    ps_ra, e_ps_ra, ps_dec, e_ps_dec, ps1g, ps1r, ps1i, ps1z, ps1y, ps1_eg, ps1_er, ps1_ei, ps1_ez, ps1_ey = self.star_galaxy_classification()
 
     #error in observed colours
     e_gr = np.sqrt(ps1_eg**2 + ps1_er**2)
@@ -28,14 +28,14 @@ def extinction_corrected_photometry(self):
     ay = (self.ebv)*(1.251 - 0.0027*(ps1g - ps1i))
 
     #error in extinction
-    e_ag = ((self.e_ebv)*(3.613 - 0.0972*(ps1g - ps1i) + 0.02*(ps1g - ps1i)**2))+\
+    e_ag = ((self.err_ebv)*(3.613 - 0.0972*(ps1g - ps1i) + 0.02*(ps1g - ps1i)**2))+\
             ((self.ebv)*((-0.0972*e_gi)+(0.02*(ps1g - ps1i)*e_gi)))
-    e_ar = (self.e_ebv)*(2.585 - 0.0315*(ps1g - ps1i)) + (self.ebv)*(-0.0315*e_gi)
-    e_ai = (self.e_ebv)*(1.908 - 0.0152*(ps1g - ps1i)) + (self.ebv)*(-0.0152*e_gi)
-    e_az = (self.e_ebv)*(1.499 - 0.0023*(ps1g - ps1i)) + (self.ebv)*(-0.0023*e_gi)
-    e_ay = (self.e_ebv)*(1.251 - 0.0027*(ps1g - ps1i)) + (self.ebv)*(-0.0027*e_gi)
+    e_ar = (self.err_ebv)*(2.585 - 0.0315*(ps1g - ps1i)) + (self.ebv)*(-0.0315*e_gi)
+    e_ai = (self.err_ebv)*(1.908 - 0.0152*(ps1g - ps1i)) + (self.ebv)*(-0.0152*e_gi)
+    e_az = (self.err_ebv)*(1.499 - 0.0023*(ps1g - ps1i)) + (self.ebv)*(-0.0023*e_gi)
+    e_ay = (self.err_ebv)*(1.251 - 0.0027*(ps1g - ps1i)) + (self.ebv)*(-0.0027*e_gi)
 
-    #prefix ec_ stands for extinction corrected magnitudes and e_ec_ stands for error in them 
+    #prefix ec_ stands for extinction corrected magnitudes and e_ec_ stands for error in them
     ec_gmag = ps1g - ag
     ec_rmag = ps1r - ar
     ec_imag = ps1i - ai

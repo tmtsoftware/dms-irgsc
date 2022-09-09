@@ -46,9 +46,12 @@ def validation_ukidss(self):
     e_computed_kf = []
     e_computed_hf = []
 
-    if self.validate is not False:
+    if self.validate is True:
+        if self.validating_data is None:
+            print('No validating data provided')
+        else:
 
-        ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = self.read_nir_data()
+            ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = self.read_nir_data()
 
         if self.reduced_chi2_leq_2 is True:
             ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, sf, e_sf, minv, sam_g, sam_r, sam_i, sam_z, sam_y, teff, logg, feh, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.reduced_chi2_leq_2()

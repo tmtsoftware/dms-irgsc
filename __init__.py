@@ -13,7 +13,7 @@ class IRGSC():
     def __init__(self, optical_data=None):
         print('Starting the program')
         self.optical_data = optical_data
-        self.validating_data = validating_data
+        self.validating_data = None
         self.use_sam = None
         self.validate = False
         self.use_kurucz = False
