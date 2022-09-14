@@ -9,9 +9,9 @@ print('Reading input datafiles')
 def read_optical_data(self):
     print('Reading optical data')
     optical_data = self.optical_data
-    print('od=',optical_data)
+
     #p1 = np.genfromtxt('/mnt/c/Users/sshah/Documents/itcc/irgsc/script/ps_tf6.csv', delimiter = ',')
-    p1 = np.genfromtxt(optical_data, delimiter = ',')
+    p1 = optical_data#np.genfromtxt(optical_data, delimiter = ',', skip_header=1)
 
     ps_ra = p1[:,0]
     ps_dec = p1[:,1]
@@ -114,9 +114,9 @@ def read_nir_data(self):
         #hdulist = fits.open('/mnt/c/Users/sshah/Documents/itcc/irgsc/script/tf6.fits',  memmap=True)
         validating_data = self.validating_data
         print('vd=', validating_data)
-        
+
         hdulist = fits.open(validating_data,  memmap=True)
-        
+
         p8 = hdulist[1].data
 
         petro_j = p8['JPETROMAG']
@@ -127,7 +127,7 @@ def read_nir_data(self):
         e_petro_k = p8['kPetroMagErr']
         t1_ra = (p8['RA'])*(180.0/np.pi)
         t1_dec = p8['DEC']*(180.0/np.pi)
-        
+
         nir_index = np.where((petro_j != -9.99999500e+08) & (e_petro_j != -9.99999500e+08) & (petro_h != -9.99999500e+08) & (e_petro_h != -9.99999500e+08) & (petro_k != -9.99999500e+08) & (e_petro_k != -9.99999500e+08) & (e_petro_j < 0.1) & (e_petro_h < 0.1) & (e_petro_k < 0.1))[0]
         print('Number of Stars in the NIR data = ', len(nir_index))
 

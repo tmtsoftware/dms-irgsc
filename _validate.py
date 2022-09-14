@@ -58,7 +58,7 @@ def validation_ukidss(self):
         elif self.reduced_chi2_for_all_stars is True:
             ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag, ec_imag, e_ec_imag, ec_zmag , e_ec_zmag, ec_ymag, e_ec_ymag, sf, e_sf, minv, sam_g, sam_r, sam_i, sam_z, sam_y, teff, logg, feh, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.reduced_chi2_all_stars()
         elif self.compute_nir_by_keeping_sf_and_reddening_free is True:
-            ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag, ec_imag, e_ec_imag, ec_zmag , e_ec_zmag, ec_ymag, e_ec_ymag, sf, e_sf, minv, sam_g, sam_r, sam_i, sam_z, sam_y, teff, logg, feh, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.compute_nir2()
+            ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag, ec_imag, e_ec_imag, ec_zmag , e_ec_zmag, ec_ymag, e_ec_ymag, minv, sam_g, sam_r, sam_i, sam_z, sam_y, teff, logg, feh, computed_j, computed_h, computed_k = self.compute_nir2()
         else:
             print('Error: Catalogue conaining computed NIR magnitudes not found.')
 
@@ -110,13 +110,13 @@ def validation_ukidss(self):
                     fehf = np.append(fehf, feh[i1])
 
                     e_obs_jf = np.append(e_obs_jf, e_ukidss_j[index_minimum_seperation])
-                    e_computed_jf = np.append(e_computed_jf, e_computed_j[i1])
+                    e_computed_jf = np.append(e_computed_jf, e_ukidss_j[index_minimum_seperation])
 
                     e_obs_hf = np.append(e_obs_hf, e_ukidss_h[index_minimum_seperation])
-                    e_computed_hf = np.append(e_computed_hf, e_computed_h[i1])
+                    e_computed_hf = np.append(e_computed_hf, e_ukidss_h[index_minimum_seperation])
 
                     e_obs_kf = np.append(e_obs_kf, e_ukidss_k[index_minimum_seperation])
-                    e_computed_kf = np.append(e_computed_kf, e_computed_k[i1])
+                    e_computed_kf = np.append(e_computed_kf, e_ukidss_k[index_minimum_seperation])
                     validate_params = ps_ra[i1], e_ps_ra[i1], ps_dec[i1], e_ps_dec[i1], ec_gmag[i1], ec_rmag[i1], ec_imag[i1], ec_zmag[i1], ec_ymag[i1], e_ec_gmag[i1], e_ec_rmag[i1], e_ec_imag[i1], e_ec_zmag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], ukidss_j[index_minimum_seperation], e_ukidss_j[index_minimum_seperation], ukidss_h[index_minimum_seperation], e_ukidss_h[index_minimum_seperation], ukidss_k[index_minimum_seperation], e_ukidss_k[index_minimum_seperation], computed_j[i1], e_computed_j[i1], computed_h[i1], e_computed_h[i1], computed_k[i1], e_computed_k[i1]
                     file4.write('%0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f\n'%(ps_ra[i1], e_ps_ra[i1], ps_dec[i1], e_ps_dec[i1], ec_gmag[i1], ec_rmag[i1], ec_imag[i1], ec_zmag[i1], ec_ymag[i1], e_ec_gmag[i1], e_ec_rmag[i1], e_ec_imag[i1], e_ec_zmag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], ukidss_j[index_minimum_seperation], e_ukidss_j[index_minimum_seperation], ukidss_h[index_minimum_seperation], e_ukidss_h[index_minimum_seperation], ukidss_k[index_minimum_seperation], e_ukidss_k[index_minimum_seperation], computed_j[i1], e_computed_j[i1], computed_h[i1], e_computed_h[i1], computed_k[i1], e_computed_k[i1]))
 
@@ -159,13 +159,13 @@ def validation_ukidss(self):
                     fehf = np.append(fehf, feh[i1])
 
                     e_obs_jf = np.append(e_obs_jf, e_ukidss_j[index_position_match])
-                    e_computed_jf = np.append(e_computed_jf, e_computed_j[i1])
+                    e_computed_jf = np.append(e_computed_jf, e_ukidss_j[index_position_match])
 
                     e_obs_hf = np.append(e_obs_hf, e_ukidss_h[index_position_match])
-                    e_computed_hf = np.append(e_computed_hf, e_computed_h[i1])
+                    e_computed_hf = np.append(e_computed_hf, e_ukidss_h[index_position_match])
 
                     e_obs_kf = np.append(e_obs_kf, e_ukidss_k[index_position_match])
-                    e_computed_kf = np.append(e_computed_kf, e_computed_k[i1])
+                    e_computed_kf = np.append(e_computed_kf, e_ukidss_k[index_position_match])
                     validate_params = ps_ra[i1], e_ps_ra[i1], ps_dec[i1], e_ps_dec[i1], ec_gmag[i1], ec_rmag[i1], ec_imag[i1], ec_zmag[i1], ec_ymag[i1], e_ec_gmag[i1], e_ec_rmag[i1], e_ec_imag[i1], e_ec_zmag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], ukidss_j[index_position_match], e_ukidss_j[index_position_match], ukidss_h[index_position_match], e_ukidss_h[index_position_match], ukidss_k[index_position_match], e_ukidss_k[index_position_match], computed_j[i1], e_computed_j[i1], computed_h[i1], e_computed_h[i1], computed_k[i1], e_computed_k[i1]
                     file4.write('%0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f\n'%(ps_ra[i1], e_ps_ra[i1], ps_dec[i1], e_ps_dec[i1], ec_gmag[i1], ec_rmag[i1], ec_imag[i1], ec_zmag[i1], ec_ymag[i1], e_ec_gmag[i1], e_ec_rmag[i1], e_ec_imag[i1], e_ec_zmag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], ukidss_j[index_position_match], e_ukidss_j[index_position_match], ukidss_h[index_position_match], e_ukidss_h[index_position_match], ukidss_k[index_position_match], e_ukidss_k[index_position_match], computed_j[i1], e_computed_j[i1], computed_h[i1], e_computed_h[i1], computed_k[i1], e_computed_k[i1]))
             return validate_params
@@ -175,10 +175,10 @@ import os.path
 def plot_validation_plots(self):
     if self.validate is not False:
         file_exists = os.path.exists('validated_catalogue.txt')
-        print('validated catalogue file exists', file_exists)
+        print('validated catalogue file exists ?', file_exists)
     elif self.validate is False:
         print("Error: Validatation is set to False")
-    elif self.validate is not False:
+    elif self.validate is not False and os.path.exists('validated_catalogue.txt'):
         p=np.genfromtxt('validated_catalogue.txt')
         ps_ra = p[:,0]; e_ps_ra = p[:,1]; ps_dec = p[:,2]; e_ps_dec = p[:,3];\
         ec_gmag = p[:,4]; ec_rmag = p[:,5]; ec_imag = p[:,6]; ec_zmag = p[:,7];\

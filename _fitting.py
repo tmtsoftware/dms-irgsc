@@ -329,4 +329,39 @@ def compute_nir2(self):
             computed_j = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfj) + self.aj - 0.91
             computed_h = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfh) + self.ah - 1.39
             computed_k = -48.6 - 2.5*np.log10(pow(10,best_sf) * kfk) + self.ak -1.85
-            file0.write('%0.16f %0.8f %0.8f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.5f %0.5f %s\n' %(best_sf, ps_ra[j], ps_dec[j], e_ps_ra[j], e_ps_dec[j], kfj, ps1g[j], ps1r[j], ps1i[j], ps1z[j], ps1y[j], teff[index_minv], logg[index_minv], feh[index_minv], ps1_eg[j], ps1_er[j], ps1_ei[j], ps1_ez[j], ps1_ey[j], sam_g[index_minv], sam_r[index_minv], sam_i[index_minv], sam_z[index_minv], sam_y[index_minv], minv, err_obs[j], computed_j, computed_h, computed_k, kfh, kfk, ebv_arr[index_minv], err_ebv, self.use_sam))
+            file0.write('%0.16f %0.8f %0.8f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.5f %0.5f %s\n' %(best_sf, ps_ra[j], ps_dec[j], e_ps_ra[j], e_ps_dec[j], kfj, ps1g[j], ps1r[j], ps1i[j], ps1z[j], ps1y[j], teff[index_minv], logg[index_minv], feh[index_minv], ps1_eg[j], ps1_er[j], ps1_ei[j], ps1_ez[j], ps1_ey[j], sam_g[index_minv], sam_r[index_minv], sam_i[index_minv], sam_z[index_minv], sam_y[index_minv], minv, computed_j, computed_h, computed_k, kfh, kfk, ebv_arr[index_minv], err_ebv, self.use_sam))
+            cat_ps_ra = np.append(cat_ps_ra, ps_ra[j])
+            cat_e_ps_ra = np.append(cat_e_ps_ra, e_ps_ra[j])
+            cat_ps_dec = np.append(cat_ps_dec, ps_dec[j])
+            cat_e_ps_dec = np.append(cat_e_ps_dec, e_ps_dec[j])
+            cat_ec_gmag = np.append(cat_ec_gmag, ps1g[j])
+            cat_e_ec_gmag = np.append(cat_e_ec_gmag, ps1_eg[j])
+            cat_ec_rmag = np.append(cat_ec_rmag, ps1r[j])
+            cat_e_ec_rmag = np.append(cat_e_ec_rmag, ps1_er[j])
+            cat_ec_imag = np.append(cat_ec_imag, ps1i[j])
+            cat_e_ec_imag = np.append(cat_e_ec_imag, ps1_ei[j])
+            cat_ec_zmag = np.append(cat_ec_zmag, ps1z[j])
+            cat_e_ec_zmag = np.append(cat_e_ec_zmag, ps1_ez[j])
+            cat_ec_ymag = np.append(cat_ec_ymag, ps1y[j])
+            cat_e_ec_ymag = np.append(cat_e_ec_ymag, ps1_ey[j])
+            cat_minv = np.append(cat_minv, minv)
+            cat_sam_g = np.append(cat_sam_g, sam_g[index_minv])
+            cat_sam_r = np.append(cat_sam_r, sam_r[index_minv])
+            cat_sam_i = np.append(cat_sam_i, sam_i[index_minv])
+            cat_sam_z = np.append(cat_sam_z, sam_z[index_minv])
+            cat_sam_y = np.append(cat_sam_y, sam_y[index_minv])
+            cat_teff = np.append(cat_teff, teff[index_minv])
+            cat_logg = np.append(cat_logg, logg[index_minv])
+            cat_feh = np.append(cat_feh, feh[index_minv])
+            cat_computed_j = np.append(cat_computed_j, computed_j)
+            #cat_e_computed_j = np.append(cat_e_computed_j, e_computed_j)
+            cat_computed_h = np.append(cat_computed_h, computed_h)
+            #cat_e_computed_h = np.append(cat_e_computed_h, e_computed_h)
+            cat_computed_k = np.append(cat_computed_k, computed_k)
+            #cat_e_computed_k = np.append(cat_e_computed_k, e_computed_k)
+        catalogue_params = cat_ps_ra, cat_e_ps_ra, cat_ps_dec, cat_e_ps_dec,\
+         cat_ec_gmag, cat_e_ec_gmag, cat_ec_rmag, cat_e_ec_rmag, cat_ec_imag, cat_e_ec_imag,\
+         cat_ec_zmag, cat_e_ec_zmag, cat_ec_ymag, cat_e_ec_ymag,\
+         cat_minv, cat_sam_g, cat_sam_r, cat_sam_i, cat_sam_z, cat_sam_y, cat_teff, cat_logg, cat_feh,\
+         cat_computed_j, cat_computed_h, cat_computed_k
+        return catalogue_params
