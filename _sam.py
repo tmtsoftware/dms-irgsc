@@ -29,7 +29,7 @@ def select_kurucz_models(self):#, use_interpolated_kurucz_models_greater_than_40
     teff, logg, feh, kg, kr, ki, kz, ky, kj, kh, kk = self.read_sam_file()
 
     if self.use_interpolated_kurucz_models_greater_than_4000K is True:
-            indp = np.where(teff>4000)[0]
+            indp = np.where(teff>=4000)[0]
             teff_g4k, logg_g4k, feh_g4k, kg_g4k, kr_g4k, ki_g4k, kz_g4k, ky_g4k, kj_g4k, kh_g4k, kk_g4k =  teff[indp], logg[indp], feh[indp], kg[indp], kr[indp], ki[indp], kz[indp], ky[indp], kj[indp], kh[indp], kk[indp]
             sam_params = teff_g4k, logg_g4k, feh_g4k, kg_g4k, kr_g4k, ki_g4k, kz_g4k, ky_g4k, kj_g4k, kh_g4k, kk_g4k
             #return teff_g4k, logg_g4k, feh_g4k, kg_g4k, kr_g4k, ki_g4k, kz_g4k, ky_g4k, kj_g4k, kh_g4k, kk_g4k
@@ -48,7 +48,7 @@ def select_phoenix_models(self):#, use_interpolated_phoenix_models_greater_than_
     teff,logg,feh,kg,kr,ki,kz,ky,kj,kh,kk = self.read_sam_file(use_phoenix='Phoenix')
 
     if self.use_interpolated_phoenix_models_greater_than_4000K is True:
-            indp = np.where(teff>4000)[0]
+            indp = np.where(teff>=4000)[0]
             teff_g4k, logg_g4k, feh_g4k, kg_g4k, kr_g4k, ki_g4k, kz_g4k, ky_g4k, kj_g4k, kh_g4k, kk_g4k =  teff[indp], logg[indp], feh[indp], kg[indp], kr[indp], ki[indp], kz[indp], ky[indp], kj[indp], kh[indp], kk[indp]
             return teff_g4k, logg_g4k, feh_g4k, kg_g4k, kr_g4k, ki_g4k, kz_g4k, ky_g4k, kj_g4k, kh_g4k, kk_g4k
 

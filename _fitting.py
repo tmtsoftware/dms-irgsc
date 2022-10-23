@@ -41,24 +41,23 @@ def calc_sf(self, j, om, e_om, sm, index_minv):
 
 def computed_reduced_chi2(self, j, oc, mc, e_oc):
     #print('Computing the reduced chi2 by matching the observed and model colours')
-
     obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
     sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
-    e_obs_gr, e_obs_gi, e_obs_gz, e_obs_gy, e_obs_ri, e_obs_ry, e_obs_rz, e_obs_iz, e_obs_iy, e_obs_zy = e_oc
-    chi2_gr = ((obs_gr[j] - sam_gr)/(e_obs_gr[j]))**2
-    chi2_gi = ((obs_gi[j] - sam_gi)/(e_obs_gi[j]))**2
-    chi2_gz = ((obs_gz[j] - sam_gz)/(e_obs_gz[j]))**2
-    chi2_gy = ((obs_gy[j] - sam_gy)/(e_obs_gy[j]))**2
-    chi2_ri = ((obs_ri[j] - sam_ri)/(e_obs_ri[j]))**2
-    chi2_rz = ((obs_rz[j] - sam_rz)/(e_obs_rz[j]))**2
-    chi2_ry = ((obs_ry[j] - sam_ry)/(e_obs_ry[j]))**2
-    chi2_iz = ((obs_iz[j] - sam_iz)/(e_obs_iz[j]))**2
-    chi2_iy = ((obs_iy[j] - sam_iy)/(e_obs_iy[j]))**2
-    chi2_zy = ((obs_zy[j] - sam_zy)/(e_obs_zy[j]))**2
+    e_obs_gr, e_obs_ri, e_obs_gi, e_obs_gz, e_obs_gy, e_obs_rz, e_obs_ry, e_obs_iz, e_obs_iy, e_obs_zy = e_oc
+    chi2_gr = (obs_gr[j] - sam_gr)/(e_obs_gr[j])
+    chi2_gi = (obs_gi[j] - sam_gi)/(e_obs_gi[j])
+    chi2_gz = (obs_gz[j] - sam_gz)/(e_obs_gz[j])
+    chi2_gy = (obs_gy[j] - sam_gy)/(e_obs_gy[j])
+    chi2_ri = (obs_ri[j] - sam_ri)/(e_obs_ri[j])
+    chi2_rz = (obs_rz[j] - sam_rz)/(e_obs_rz[j])
+    chi2_ry = (obs_ry[j] - sam_ry)/(e_obs_ry[j])
+    chi2_iz = (obs_iz[j] - sam_iz)/(e_obs_iz[j])
+    chi2_iy = (obs_iy[j] - sam_iy)/(e_obs_iy[j])
+    chi2_zy = (obs_zy[j] - sam_zy)/(e_obs_zy[j])
     len_photometric_points = 10.0
     len_sam_params = 3.0
-    reduced_chi2 = (1.0/(len_photometric_points - len_sam_params))*(chi2_gr + chi2_gi + chi2_gz + chi2_gy + chi2_ri + chi2_rz \
-                            + chi2_ry + chi2_iz + chi2_iy + chi2_zy)
+    reduced_chi2 = (1.0/(len_photometric_points - len_sam_params))*(chi2_gr**2 + chi2_gi**2 + chi2_gz**2\
+     + chi2_gy**2 + chi2_ri**2 + chi2_rz**2 + chi2_ry**2 + chi2_iz**2 + chi2_iy**2 + chi2_zy**2)
     return reduced_chi2, np.min(reduced_chi2),  chi2_gr, chi2_gi, chi2_gz, chi2_gy, chi2_ri, chi2_rz, chi2_ry, chi2_iz, chi2_iy, chi2_zy
 
 
@@ -73,9 +72,7 @@ cat_sam_i = []; cat_sam_z = []; cat_sam_y = []; cat_teff = []; cat_logg = [];\
 cat_feh = []; cat_computed_j = []; cat_e_computed_j = []; cat_computed_h = [];\
 cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
 
-    if self.use_reduced_chi2_all_stars is not True:
-        print('setting use_reduced_chi2_all_stars to True')
-        self.use_reduced_chi2_all_stars is True
+    if self.use_reduced_chi2_all_stars is True:
         print('Computing the NIR magnitudes for all stars by computing chi2r after matching the colours')
 
         ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag, e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag, de_reddened_gr, de_reddened_ri, de_reddened_gi, de_reddened_gz, de_reddened_gy, de_reddened_rz, de_reddened_ry, de_reddened_iz, de_reddened_iy, de_reddened_zy, e_gr, e_ri, e_gi, e_gz, e_gy, e_rz, e_ry, e_iz, e_iy, e_zy = self.extinction_corrected_photometry()
@@ -110,7 +107,6 @@ cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
                 minv = self.find_nearest(dvf, min_dvf)
                 index_best_fit_sam = np.where(minv == (dvf))[0]
                 sf, e_sf, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.calc_sf(j=j, om = observed_optical_magnitudes, e_om = e_observed_optical_magnitudes, sm = sam_magnitudes, index_minv = index_best_fit_sam)
-                #print('sf=', sf, e_sf, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k)
                 file0.write('%0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %s\n' %(ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], sf, e_sf, minv, sam_g[index_best_fit_sam], sam_r[index_best_fit_sam], sam_i[index_best_fit_sam], sam_z[index_best_fit_sam], sam_y[index_best_fit_sam], teff[index_best_fit_sam], logg[index_best_fit_sam], feh[index_best_fit_sam], computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k, self.use_sam))
                 cat_ps_ra = np.append(cat_ps_ra, ps_ra[j])
                 cat_e_ps_ra = np.append(cat_e_ps_ra, err_ps_ra[j])
@@ -162,8 +158,8 @@ cat_feh = []; cat_computed_j = []; cat_e_computed_j = []; cat_computed_h = [];\
 cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
 
     if self.use_reduced_chi2_leq_2 is not True:
-        print('setting use_reduced_chi2_all_stars to True')
-        self.use_reduced_chi2_leq_2 is True
+        print('Please set use_reduced_chi2_all_stars to True')
+    elif self.use_reduced_chi2_leq_2 is True:
         print('Computing the NIR magnitudes for those stars whose chi2_r is less than or \
         equal to 2 after matching the observed and model colours')
 
@@ -172,13 +168,24 @@ cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
         optical_magnitudes = ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag
         e_optical_magnitudes = e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag
 
+        de_reddened_gr = ec_gmag - ec_rmag
+        de_reddened_gi = ec_gmag - ec_imag
+        de_reddened_gz = ec_gmag - ec_zmag
+        de_reddened_gy = ec_gmag - ec_ymag
+        de_reddened_ri = ec_rmag - ec_imag
+        de_reddened_rz = ec_rmag - ec_zmag
+        de_reddened_ry = ec_rmag - ec_ymag
+        de_reddened_iz = ec_imag - ec_zmag
+        de_reddened_iy = ec_imag - ec_ymag
+        de_reddened_zy = ec_zmag - ec_ymag
+
         if self.use_kurucz is None and self.use_phoenix is None:
             print("Please enter the name of the Stellar Atmospheric Model to be used")
 
         if self.use_kurucz is True:
                 model_params = self.select_kurucz_models()
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
-
+                print(sam_g, sam_r, sam_i, sam_z, sam_y)
         elif self.use_phoenix is True:
                 model_params = self.select_phoenix_models()
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = model_params
@@ -195,12 +202,12 @@ cat_e_computed_h = []; cat_computed_k = []; cat_e_computed_k = []
 
         with open('catalogue.txt', 'w') as file0:
             for j in range(len(de_reddened_gr)):
-                print('j=', j)
                 dvf, min_dvf, _, _, _, _, _, _, _, _, _, _ = self.computed_reduced_chi2(j, oc = observed_colours, mc = model_colours, e_oc = e_observed_colours)
                 minv = self.find_nearest(dvf, min_dvf)
                 if minv <= 2.0:
                     index_best_fit_sam = np.where(minv == (dvf))[0]
                     sf, e_sf, computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k = self.calc_sf(j, om=optical_magnitudes,e_om=e_optical_magnitudes,sm=model_magnitudes, index_minv = index_best_fit_sam)
+                    #print('sf=', sf,j,minv)
                     file0.write('%0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %0.16f %s\n' %(ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], sf, e_sf, minv, sam_g[index_best_fit_sam], sam_r[index_best_fit_sam], sam_i[index_best_fit_sam], sam_z[index_best_fit_sam], sam_y[index_best_fit_sam], teff[index_best_fit_sam], logg[index_best_fit_sam], feh[index_best_fit_sam], computed_j, e_computed_j, computed_h, e_computed_h, computed_k, e_computed_k, self.use_sam))
                     cat_ps_ra = np.append(cat_ps_ra, ps_ra[j])
                     cat_e_ps_ra = np.append(cat_e_ps_ra, err_ps_ra[j])
@@ -273,8 +280,7 @@ def compute_nir2(self):
 
     if self.use_compute_nir_by_keeping_sf_and_reddening_free is not True:
         print('Setting use_computed_nir_by_keeping_sf_and_reddening_free to True')
-
-        self.use_compute_nir_by_keeping_sf_and_reddening_free is True
+        self.use_compute_nir_by_keeping_sf_and_reddening_free == True
         print('Computing the NIR magnitudes by keeping the scale factor and reddening free')
     bnds = [(-np.inf,np.inf), (0,2)]
     #ps_ra, e_ps_ra, ps_dec, e_ps_dec, ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag, e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag, de_reddened_gr, de_reddened_gi, de_reddened_ri, de_reddened_gy, de_reddened_gz, de_reddened_ry, de_reddened_rz, de_reddened_iy, de_reddened_iz, de_reddened_zy, e_ec_gr, e_ec_gi, e_ec_gz, e_ec_gy, e_ec_ri, e_ec_rz, e_ec_ry, e_ec_iz, e_ec_iy, e_ec_zy = self.extinction_corrected_photometry()

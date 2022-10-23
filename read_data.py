@@ -100,8 +100,6 @@ def read_optical_data(self):
     filtered_zkron = zkron[ind]
     filtered_ykron = ykron[ind]
 
-    print(filtered_dec)
-
     raw_optical_data = filtered_ra, filtered_err_ra, filtered_dec, filtered_err_dec, filtered_gpsf, filtered_rpsf, filtered_ipsf, filtered_zpsf, filtered_ypsf, filtered_e_gpsf, filtered_e_rpsf, filtered_e_ipsf, filtered_e_zpsf, filtered_e_ypsf, filtered_gkron, filtered_rkron, filtered_ikron, filtered_zkron, filtered_ykron
     return raw_optical_data
 
@@ -113,9 +111,7 @@ def read_nir_data(self):
         print('Now reading the NIR survey data for validation')
         #hdulist = fits.open('/mnt/c/Users/sshah/Documents/itcc/irgsc/script/tf6.fits',  memmap=True)
         validating_data = self.validating_data
-        print('vd=', validating_data)
-
-        hdulist = fits.open(validating_data,  memmap=True)
+        hdulist = validating_data#fits.open(str(validating_data), memap=True)
 
         p8 = hdulist[1].data
 
