@@ -250,6 +250,7 @@ class Validate():
                                     edgecolor = 'g', density=True, alpha = 0.5,\
                                     facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
+        print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
@@ -286,7 +287,8 @@ class Validate():
         ny, by, px = ax_marg_y.hist(diff_hf, bins = bins2, orientation="horizontal",\
                                  edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
-        ax_marg_y.set_title('Median at: ' +str(by[np.where(ny==biny_max)[0]][0]))
+        print('binymax=', biny_max)
+        ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
         ax_marg_x.legend(loc='best')
@@ -322,7 +324,8 @@ class Validate():
         ny, by, px = ax_marg_y.hist(diff_kf, bins = bins2, orientation="horizontal",\
                                     edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
-        ax_marg_y.set_title('Median at T= ' + str(by[np.where(ny==biny_max)[0]]))
+        print('binymax=', biny_max)
+        ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
         ax_marg_x.legend(loc='best')
@@ -339,4 +342,3 @@ class Validate():
         ax_marg_x.set_ylabel('N')
         plt.savefig('validation_plot_k' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
         plt.clf()
-
