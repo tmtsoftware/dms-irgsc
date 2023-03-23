@@ -79,7 +79,8 @@ class Validate():
                             rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
                             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         except FileNotFoundError:
-            Generate_IRGSC.generate_irgsc(self.ra,self.dec)
+            gc = Generate_IRGSC(self.ra,self.dec)
+            gc.generate_irgsc()
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
             ps1_objid = irgsc_data[:,0]; ps_ra = irgsc_data[:,1]; err_ps_ra = irgsc_data[:,2]; ps_dec = irgsc_data[:,3]; \

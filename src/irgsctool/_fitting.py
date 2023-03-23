@@ -113,10 +113,8 @@ class Generate_IRGSC():
 
     def __init__(self, ra, dec):
          self.ra, self.dec = ra, dec
-         self.generate_irgsc
          self.rd = Read_Data(ra,dec)
          self.ec = EC(ra, dec)
-
 
 
     def generate_irgsc(self, use_optimal_method=True):
@@ -135,7 +133,6 @@ class Generate_IRGSC():
             Kurucz/Castelli-Kurucz (K0):    4000 - 10000          ---                     ---
 
         """
-        
         if use_optimal_method is True:
             print("")
             print('################################################################################')
@@ -151,7 +148,6 @@ class Generate_IRGSC():
             ndetections, nstackdetections, ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2,\
             rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2, zinfoflag3,\
             yinfoflag, yinfoflag2, yinfoflag3 = self.ec.extinction_corrected_photometry()
-
             _,_,aj,ah,ak = self.ec.get_reddening()
             gaia_data = self.rd.read_gaia_data()
             gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
@@ -296,4 +292,4 @@ class Generate_IRGSC():
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
                                 iinfoflag2[j], yinfoflag3[j]
                             writer.writerow(data)
-        return data
+                return data
