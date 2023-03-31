@@ -24,39 +24,17 @@ header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
 'yinfoflag3', 'SAM Flag']
 
 def stdv(sfavg, v1, v2, v3, v4, v5):
-    """
-          function to calculate standard deviation
-    """
     mu = sfavg
     n=5
     sig = (((mu - v1)**2 + (mu - v2)**2 + (mu-v3)**2 + (mu - v4)**2 + (mu - v5)**2)/n)**0.5
     return sig
 
 def find_nearest(array, value):
-    """
-    function to find the nearest element
-    in an array to the given value
-    """
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return array[idx]
 
 def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
-
-        """
-        This function calculates the scale factor using
-        the best fitted model to the observed data.
-
-        Returns:
-                sf_mean: Scale Factor averaged over the PANSTARRS colors
-                e_sf_mean: error in the scale factor
-                cj: computed J magnitude
-                ch: computed H magnitude
-                ck: computed K magnitude
-                e_cj, e_ch, e_ck: errors in the computed NIR magnitudes
-        The NIR magnitudes are returned in Vega system.
-        """
-
         ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag = om
         e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag = e_om
         sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = sm
@@ -86,11 +64,6 @@ def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
 
 
 def compute_dquad(j, oc, mc):
-        """
-            Calculates the quantity d_quad which is the cumulative difference
-            in the observed and the model colors.
-    
-        """
         j = np.int64(j)
         obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
         sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
@@ -112,33 +85,43 @@ def compute_dquad(j, oc, mc):
 
 class GenerateIRGSC():
     """
-    class to generate IRGSC
+        <justify> The *** GenerateIRGSC class *** hosts method to generate a catalog of
+        probable stellar sources in the PANSTARRS data with their computed magnitudes, astrometric
+        information from GAIA DR3 data, best fitted model parameters and flags.</justify>
+    
     """
 
     def __init__(self, ra, dec):
          self.ra, self.dec = ra, dec
          self.rd = ReadData(ra,dec)
          self.ec = EC(ra, dec)
-
+         self.k0 = Models(use_sam='Kurucz')
+         self.c1 = Models(use_sam='Phoenix')
+         self.c2 = Models(use_sam='Phoenix')
 
     def generate_irgsc(self, use_optimal_method=True):
         """
-            This function finds the best fitting model to the
-            observed colors of the stellar source.
+            `irgsctool.GenerateIRGSC.generate_irgsc(use_optimal_method=True)`
+            
+            <justify> This method finds 
+            the best fitting model to the observed colors of the stellar source.
+            The best fitting model is chosen from a combination of Kurucz/Castelli-Kurucz 
+            and Phoenix synthetic spectra convolved with the PANSTARRS response function
+            (or BANDPASS) which is integrated w.r.t. the wavelength and normalised to
+            the product of the PANSTARRS response function and wavelength. This is also
+            called as Effective Stimulus (ES). </justify>
 
-            The best fitting model is chosen from a combination
-            of Kurucz/Castelli-Kurucz and Phoenix synthetic spectra 
-            convolved with the PANSTARRS response function (or 
-            BANDPASS) which is integrated w.r.t. the wavelength and
-            normalised to the product of the PANSTARRS response
-            function and wavelength. 
-            The model parameters are: T_eff, log(g) and [Fe/H].
+            $$
+            ES = \\frac{\\int{F_{\\lambda}P_{\\lambda}{\\lambda}
+            d{\\lambda}}}{\\int{P_{\\lambda}{\\lambda}d{\\lambda}}}
+            $$
+            
+            The spectra is obtained from pysynphot 
+            ([More information here](https://pysynphot.readthedocs.io)).
 
-            The range of models selected for fitting is:
-            Model Name                   T_eff (K)       log(g) (dex)      [Fe/H] (dex)
-            Phoenix (C1) :               2800 - 5000     3.0 - 5.5         -5.0 - -1.5
-            Phoenix (C2)                 2800 - 4000     0.0 - 3.0         -0.5 - 1.5
-            Kurucz/Castelli-Kurucz (K0): 4000 - 10000    ---               ---
+            Returns:
+                    irgsc_data: The generated IRGSC.
+
         """
         if use_optimal_method is True:
             print("")
@@ -158,18 +141,24 @@ class GenerateIRGSC():
             gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
+            
+            k0 = self.k0#Models('Kurucz')
+            k0.read_sam_file(use_sam='Kurucz')
+            
+            c1 = self.c1#Models('Phoenix')
+            c1.read_sam_file(use_sam='Phoenix')
+            
+            c2 = self.c2#Models('Phoenix')
+            c2.read_sam_file(use_sam='Phoenix')
 
-            model_params_k0 = Models.select_sam(teff_range=[4000,10000],
-                                                logg_range=None, feh_range=None,
-                                                use_sam = 'Kurucz',use_optimal_method=True)
-            model_params_c1 = Models.select_sam(teff_range=[2800,5000],
+            model_params_k0 = k0.select_sam_range(teff_range=[4000,10000],
+                                                logg_range=None, feh_range=None)
+            model_params_c1 = c1.select_sam_range(teff_range=[2800,5000],
                                                 logg_range=[3.0,5.5],
-                                                feh_range=[-5.0,-1.5],
-                                                use_sam = 'Phoenix',use_optimal_method=True)
-            model_params_c2 = Models.select_sam(teff_range=[2800,4000],
+                                                feh_range=[-5.0,-1.5])
+            model_params_c2 = c2.select_sam_range(teff_range=[2800,4000],
                                                 logg_range=[0.0,3.0],
-                                                feh_range=[-0.5,1.5],
-                                                use_sam = 'Phoenix',use_optimal_method=True)
+                                                feh_range=[-0.5,1.5])
 
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
             sam_h_c1, sam_k_c1 = model_params_c1
@@ -247,12 +236,14 @@ class GenerateIRGSC():
                             index_min_ang_seperation = np.where(min_gaia_ang_seperation \
                                                                 == gaia_angular_seperation)[0]
 
-                            data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], \
+                            irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], \
                                 err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], \
                                 e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], \
-                                e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], teff[j], \
-                                logg[j], feh[j], sam_g[j], sam_r[j], sam_i[j], sam_z[j],\
-                                sam_y[j], sam_j[j], sam_h[j], sam_k[j], sf_avg[0], sigma_sf,\
+                                e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], teff[index_best_fit_sam][0], \
+                                logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error,\
                                 gaia_source_id[index_min_ang_seperation][0], gaia_ra[index_min_ang_seperation][0],\
@@ -265,13 +256,16 @@ class GenerateIRGSC():
                                 nstackdetections[j], ginfoflag[j], ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j],\
                                 rinfoflag3[j], iinfoflag[j], iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j],\
                                 zinfoflag3[j], yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
-                            writer.writerow(data)
+                            writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 0.0:
-                            data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                            irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
                                 ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
                                 e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
-                                teff[j], logg[j], feh[j], sam_g[j], sam_r[j], sam_i[j], sam_z[j],\
-                                sam_y[j], sam_j[j], sam_h[j], sam_k[j], sf_avg[0], sigma_sf,\
+                                teff[index_best_fit_sam][0], \
+                                logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error, -999, -999, -999,\
                                 -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, objinfoflag[j],\
@@ -279,13 +273,16 @@ class GenerateIRGSC():
                                 ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j],\
                                 yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
-                            writer.writerow(data)
+                            writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 1.0:
-                            data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                            irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
                                 ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
                                 e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
-                                teff[j], logg[j], feh[j], sam_g[j], sam_r[j], sam_i[j], sam_z[j],\
-                                sam_y[j], sam_j[j], sam_h[j], sam_k[j], sf_avg[0], sigma_sf,\
+                                teff[index_best_fit_sam][0], \
+                                logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
                                 gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
@@ -298,5 +295,5 @@ class GenerateIRGSC():
                                 ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
                                 iinfoflag2[j], yinfoflag3[j]
-                            writer.writerow(data)
-        return data
+                            writer.writerow(irgsc_data)
+        return irgsc_data

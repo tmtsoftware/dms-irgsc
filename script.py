@@ -1,4 +1,7 @@
-from irgsctool import Validate
+import os
+import sys
+from irgsctool import GenerateIRGSC as GC
+from irgsctool import ValidateIRGSC as VG
 
-vd = Validate(0.0,0.0)
-vd.validate()
+gc = VG(0.0, 0.0)
+gc.validate(validate=True)
