@@ -107,13 +107,13 @@ pip install irgsctool
 
 ```
 ## 2. Using .zip file from GitHub:
-Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
+Download the .zip file from [here](https://github.com/tmtsoftware/dms-irgsc) and unzip it. Then open the directory in terminal and type:
 ```
 pip install .
 ```
 ## 3 Using the Development version from GitHub:
 ```
-pip install git+https://github.com/sshah1502/irgsc@main
+pip install git+https://github.com/tmtsoftware/dms-irgsc.git
 ```
 
 # Usage
