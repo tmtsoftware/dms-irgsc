@@ -87,7 +87,7 @@ Ascension and Declination of the source is obtained from the mean photometric in
 
 # Application of irgsctool on fields
 The method developed for the generation of IRGSC has applied on twenty test fields across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the 'generated_irgsc' directory.
-In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields [more information available here](https://arxiv.org/abs/1612.05560). Since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the 3-pi PANSTARRS survey.
+In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields ([more information available here](https://arxiv.org/abs/1612.05560)). Since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the 3-pi PANSTARRS survey.
 
 
 # Requirements
@@ -149,7 +149,7 @@ The module Validate(ra,dec) is the module that validates the computed NIR magnit
 
 Please add the following acknowledgment if you use our package in your work.
 
-"This work has made use of "tmt-irgsc" developed as part of the Thirty Meter Telescope (TMT) project."
+"This work has made use of "irgsctool" developed as part of the Thirty Meter Telescope (TMT) project."
 
 If you have any questions or suggestions for improvements to this repo,
 please contact the owners of the repository.
