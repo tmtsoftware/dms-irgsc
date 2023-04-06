@@ -149,7 +149,7 @@ The module Validate(ra,dec) is the module that validates the computed NIR magnit
 
 Please add the following acknowledgment if you use our package in your work.
 
-"This work has made use of "tmt-irgsc" developed as part of the Thirty Meter Telescope (TMT) project."
+"This work has made use of "irgsctool" developed as part of the Thirty Meter Telescope (TMT) project."
 
 If you have any questions or suggestions for improvements to this repo,
 please contact the owners of the repository.
