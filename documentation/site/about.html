@@ -469,10 +469,15 @@ Ascension and Declination of the source is obtained from the mean photometric in
 <td align="left">These flags indicate the details of the y filter stack photometry</td>
 <td align="left">float</td>
 </tr>
+<tr>
+<td align="left">SAM</td>
+<td align="left">The name of the best-fitted Stellar Atmospheric Model (SAM)</td>
+<td align="left">string</td>
+</tr>
 </tbody>
 </table>
 <h2 id="application-of-irgsctool-on-fields">Application of irgsctool on fields</h2>
-<p>The method developed for the generation of IRGSC has applied on twenty test fields (shown in the following table) across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the <a href="https://github.com/sshah1502/irgsc/tree/main/generated_irgsc">generated_irgsc</a> directory.
+<p>The method developed for the generation of IRGSC has applied on twenty test fields (shown in the following table) across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the <a href="https://github.com/tmtsoftware/dms-irgsc/generated_irgsc">generated_irgsc</a> directory.
 In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields <a href="https://arxiv.org/abs/1612.05560">more information available here</a>. Out of eleven MDS fields, one field coincides with M31. Hence it is skipped here since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the 3-pi PANSTARRS survey.
 In case of validation using the UKIDSS observed NIR data, certain fields have observations in only one or two out of the J, H and K bands. This package takes care of these issues and validates the generated IRGSC using the available band data.</p>
 <table>
