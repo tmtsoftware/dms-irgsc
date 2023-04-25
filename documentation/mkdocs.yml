@@ -3,6 +3,8 @@ site_url: https://tmtsoftware.github.io/dms-irgsc/
 repo_url: https://github.com/tmtsoftware/dms-irgsc/
 site_author: Sarang Shah
 use_directory_urls: false
+site_author: Sarang Shah
+use_directory_urls: false
 markdown_extensions:
     - pymdownx.snippets:
 theme: 
@@ -25,7 +27,7 @@ markdown_extensions:
 
 plugins:
   - git-committers:
-      repository:
+      repository: tmtsoftware/dms-irgsc/
       branch: main
   - git-authors:
   - optimize
@@ -52,6 +54,11 @@ plugins:
         - docs
   - glightbox
   - search
+  - with-pdf:
+        cover_title: irgsctool
+        cover_subtitle: Software documentation for irgsctool python package
+        author: Sarang Shah
+        copyright: 
 
 nav:
   - Home : index.md
