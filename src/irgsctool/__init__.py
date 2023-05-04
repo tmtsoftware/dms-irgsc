@@ -35,7 +35,7 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
             GenerateIRGSC, ValidateIRGSC):
     """
     ------------------------------------------
-    Initialisation of parent *** irgsc class ***. This class has several child classes.
+    Initialisation of child *** irgsc class ***. This class has several child classes.
     """
     print ('##########################################################################')
     print("")

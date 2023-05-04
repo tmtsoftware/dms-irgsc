@@ -3,5 +3,6 @@ import sys
 from irgsctool import GenerateIRGSC as GC
 from irgsctool import ValidateIRGSC as VG
 
-gc = VG(334.27, 0.38)
+
+gc = VG(35, -3.5)
 gc.validate(validate=True)
