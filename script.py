@@ -4,5 +4,5 @@ from irgsctool import GenerateIRGSC as GC
 from irgsctool import ValidateIRGSC as VG
 
 
-gc = VG(66.75, 15.86)
+gc = VG(334.27, 0.38)
 gc.validate(validate=True)
