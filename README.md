@@ -5,7 +5,7 @@ This is a python repository dedicated to the development of the Near-Infrared Gu
 
 # Packages
 ## irgsctool:
-<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available on the GitHub homepage. Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of IRGSC.
+<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available in the generated_irgsc directory (seec details below). Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of IRGSC.
 
 ### Nature of the generated catalog
 The IRGSC generated has various information about the sources shown in the following Table. This table describes the columns in the IRGSC generated for a particular test field. The details of the flags, e.g., infoflags, filterflags, and qualityflags can be found [here](https://outerspace.stsci.edu/display/PANSTARRS/PS1+StackObjectView+table+fields). These flags indicate various values assigned to
@@ -156,17 +156,12 @@ pyvo.
 
 # Installation
 
-## 1. Using pip:
-```
-pip install irgsctool
-
-```
-## 2. Using .zip file from GitHub:
+## 1. Using .zip file from GitHub:
 Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
 ```
 pip install .
 ```
-## 3 Using the Development version from GitHub:
+## 2. Using the Development version from GitHub:
 ```
 pip install git+https://github.com/sshah1502/irgsc@main
 ```
@@ -202,4 +197,4 @@ Please add the following acknowledgment if you use our package in your work.
 "This work has made use of "irgsctool" developed as part of the Thirty Meter Telescope (TMT) project."
 
 If you have any questions or suggestions for improvements to this repo,
-please contact the owners of the repository.
+please email: sarang.itcc@iiap.res.in
