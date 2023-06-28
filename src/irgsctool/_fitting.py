@@ -169,6 +169,7 @@ class GenerateIRGSC():
             len_c1 = len(teff_c1)
             len_c2 = len(teff_c2)
             len_k0 = len(teff_k0)
+            print('length of models=', len_c1, len_c2, len_k0)
             teff = np.concatenate((teff_c1, teff_c2, teff_k0), axis=0)
             logg = np.concatenate((logg_c1, logg_c2, logg_k0), axis=0)
             feh = np.concatenate((feh_c1, feh_c2, feh_k0), axis=0)
