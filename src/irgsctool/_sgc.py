@@ -80,9 +80,9 @@ class StarGalaxyClassification():
                                         (e_rkron != -999) & (e_ikron != -999) & \
                                         (e_zkron != -999) & (e_ykron != -999) &\
                                         (e_rpsf<0.2) & (e_gpsf<0.2) & (e_ipsf<0.2) &\
-                                        (e_zpsf<0.2) & (e_ypsf<0.2) & (gpsf - gkron < 0.05) & \
-                                        (rpsf - rkron < 0.05) & (ipsf - ikron < 0.05) & \
-                                        (zpsf - zkron < 0.05) & (ypsf - ykron < 0.05))[0]
+                                        (e_zpsf<0.2) & (e_ypsf<0.2) & ((gpsf - gkron) < 0.05) & \
+                                        ((rpsf - rkron) < 0.05) & ((ipsf - ikron) < 0.05) & \
+                                        ((zpsf - zkron) < 0.05) & ((ypsf - ykron) < 0.05))[0]
         galaxy_index = np.where((gpsf!= -999) & (ipsf!= -999) & (rpsf != -999) & (zpsf != -999) &\
                                         (ypsf != -999) & (e_gpsf != -999) &\
                                         (e_rpsf != -999) & (e_ipsf != -999) &\
